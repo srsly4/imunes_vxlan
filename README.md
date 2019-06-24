@@ -1,11 +1,10 @@
-# IMUNES - Integrated Multiprotocol Network Emulator/Simulator
+# Sieci IMUNES (Integrated Multiprotocol Network Emulator/Simulator) na odseparowanych hostach połączonych na poziomie wirtualnej warstwy łącza danych za pomocą technologii VXLAN
 
-IMUNES to realistyczny framework do symulacji/emulacji topologii sieciowych. Oparty jest na jądrze FreeBSD i Linuxa partycjonowanym na wiele lekkich wirtualnych węzłów, które mogą zostać połączone na poziomie jądra w celu utworzenia złożonej topologii sieciowej 
-Więcej szczegółów można uzyskać na stronie [IMUNES](http://imunes.net/)
+IMUNES to realistyczny framework do symulacji/emulacji topologii sieciowych. Oparty jest na jądrze FreeBSD i Linuxa partycjonowanym na wiele lekkich wirtualnych węzłów, które mogą zostać połączone na poziomie jądra w celu utworzenia złożonej topologii sieciowej. W obrębie systemu Linux, IMUNES wykorzystuje technologię Docker i Open vSwitch. Więcej szczegółów można uzyskać na stronie [IMUNES](http://imunes.net/)
 
-W obrębie systemu Linux, IMUNES wykorzystuje technologię Docker i Open vSwitch
+# Instalacja IMUNES na systemie Linux
+Celem realizacji DIY wymagane jest zainstalowanie frameworka na przynajmniej dwóch hostach niepodzielonych NAT-em. Instalację pokażemy na przykładzie dwóch dystrybucji systemu Linux (Arch Linux oraz Fedora).
 
-# Instalacja na systemie Linux
 
 ## Wymagane pakiety:
 1. tcl
@@ -193,10 +192,17 @@ Aby go rozwiązać należy wykonać polecenie:
 $ xhost +si:localuser:root
 ```
 
-## Alternatywnie można użyć obrazu maszyny wirtualnej
+## Maszyna wirtualna
 
-Poszczególne kroki opisane są na stronie wiki [IMUNES Virtual Machine](http://imunes.net/wiki/wiki/WikiImunesVirtualMachine)
+Alternatywnie, można użyć sieci maszyn wirutalnych – obraz przygotowanej maszyny ze wszystkimi skryptami dostępny jest do pobrania tutaj: [IMUNES VXLAN Virtual Machine](https://drive.google.com/open?id=1R70IWO3-jHEkoUk4p1LOA9otzN7H4BY7)
 
 ## Inne dystrybucje
 
 Instalacja dla innych dystrybucji opisana jest na stronie repozytorium [IMUNES](https://github.com/imunes/imunes)
+
+# Konfiguracja VXLAN
+Do półautomatycznej konfiguracji połączenia warstwy drugiej pomiędzy sieciami IMUNES przygotowaliśmy skrypt `imunes_vxlan.sh`. Z uwagi na konieczność konfiguracji sieci wymagane jest jego uruchomienie jako root.
+
+Wykonanie skryptu jest w pełni interaktywne. Najpierw wymagane jest podanie uniknalnego numeru identyfikującego hosta z daną siecią IMUNES (np. kolejne cyfry 1, 2...). Następnie skrypt pozwala użytkownikowi wybrać fizyczny interfejs sieciowy, na którym zostanie skonfigurowane połączenie VXLAN.
+
+Pomyślne wykonanie skryptu powinno skutować wygenerowaniem pliku `.imn` zawierającego szkielet sieci IMUNES dla danego fizycznego hosta z routerem brzegowym posiadającym unikalny adres IP w wirtualnej sieci. Uruchomienie sieci na przynajmniej dwóch hostach powinno umożliwić przeprowadzenie testu echo pomiędzy routerami brzegowymi.
