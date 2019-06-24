@@ -2,6 +2,8 @@
 
 IMUNES to realistyczny framework do symulacji/emulacji topologii sieciowych. Oparty jest na jądrze FreeBSD i Linuxa partycjonowanym na wiele lekkich wirtualnych węzłów, które mogą zostać połączone na poziomie jądra w celu utworzenia złożonej topologii sieciowej. W obrębie systemu Linux, IMUNES wykorzystuje technologię Docker i Open vSwitch. Więcej szczegółów można uzyskać na stronie [IMUNES](http://imunes.net/)
 
+Ten DIY ma za zadanie wyjaśnić, w jaki sposób skonfigurować kilka instancji IMUNES na wielu hostach tak, aby z pomocą technologii VXLAN działały jak jedna spójna sieć wirtualna. 
+
 # Instalacja IMUNES na systemie Linux
 Celem realizacji DIY wymagane jest zainstalowanie frameworka na przynajmniej dwóch hostach niepodzielonych NAT-em. Instalację pokażemy na przykładzie dwóch dystrybucji systemu Linux (Arch Linux oraz Fedora).
 
@@ -206,3 +208,10 @@ Do półautomatycznej konfiguracji połączenia warstwy drugiej pomiędzy siecia
 Wykonanie skryptu jest w pełni interaktywne. Najpierw wymagane jest podanie uniknalnego numeru identyfikującego hosta z daną siecią IMUNES (np. kolejne cyfry 1, 2...). Następnie skrypt pozwala użytkownikowi wybrać fizyczny interfejs sieciowy, na którym zostanie skonfigurowane połączenie VXLAN.
 
 Pomyślne wykonanie skryptu powinno skutować wygenerowaniem pliku `.imn` zawierającego szkielet sieci IMUNES dla danego fizycznego hosta z routerem brzegowym posiadającym unikalny adres IP w wirtualnej sieci. Uruchomienie sieci na przynajmniej dwóch hostach powinno umożliwić przeprowadzenie testu echo pomiędzy routerami brzegowymi.
+
+# Zadania
+1. Uruchomić IMUNES na trzech hostach w tej samej sieci.
+2. Skonfigurować połączenie VXLAN pomiędzy nimi.
+3. Korzystając z wygenerowanych szablonów, stwórz w każdej instancji IMUNES sieć złożoną z 4 hostów i 3 routerów (oprócz routera brzegowego połączonego VXLAN) i skonfiguruj routing przy użyciu protokołu OSPF *wyłącznie* wewnątrz niej (adresacja dowolna).
+4. Skonfiguruj routing z użyciem protokołu BGP pomiędzy strefami będącymi poszczególnymi sieciami IMUNES.
+5. Wykonaj polecenie ping pomiędzy dwoma hostami z różnych stref. 
