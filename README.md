@@ -95,6 +95,13 @@ Mając zainstalowany pakiet `yay` można przystąpić do instalacji IMUNES:
 $ yay -S imunes-git
 ```
 
+Następnie należy upewnić się, że usługi `docker` oraz `openvswitch` działają:
+
+```bash
+$ sudo systemctl restart docker
+$ sudo systemctl restart openvswitch
+```
+
 Aby możliwe było emulowanie topologii sieciowe wymagane jest pobranie template'u systemu plików, wykonuje się to poleceniem:
 
 ```bash
@@ -126,4 +133,70 @@ $ sudo dnf install openvswitch docker-ce docker-ce-cli containerd.io wireshark-q
     xterm ImageMagick tcl tcllib tk kernel-modules-extra util-linux
 ```
 
-Następnie należy upewnić się, że w `/usr/local/bin`
+Następnie należy upewnić się, że w zmiennej środowiskowej PATH znajduje się ścieżka `/usr/local/bin`, jeżeli tak nie jest należy wykonać poniższe polecenie (w zależności od wykorzystywanego interpretera):
+
+```bash
+$ echo 'PATH=$PATH:/usr/local/bin' >> ~/.bashrc
+```
+
+Co więcej, dokumentacja IMUNES wskazuje, aby zmienna środowiskowa PATH użytkownika `root` również zawierała tę ścieżkę, dlatego w razie konieczności należy wykonać (w zależności od wykorzystywanego interpretera):
+
+```bash
+$ sudo su -
+# echo 'PATH=$PATH:/usr/local/bin' >> ~/.bashrc
+# exit
+```
+
+Kolejnym krokiem jest upewnienie się, że `/usr/local/bin` znajduje się w `secure_path`, w tym celu należy w razie konieczności edytować jeden plik przy pomocy polecenia:
+
+```bash
+$ sudo visudo
+```
+
+Należy znaleźć linię podobną do:
+
+```
+Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+```
+
+a następnie, jeżeli zajdzie taka potrzeba, dodać tam ścieżkę.
+
+
+Następnie należy upewnić się, że usługi `docker` oraz `openvswitch` działają:
+
+```bash
+$ sudo systemctl restart docker
+$ sudo systemctl restart openvswitch
+```
+
+Aby możliwe było emulowanie topologii sieciowe wymagane jest pobranie template'u systemu plików, wykonuje się to poleceniem:
+
+```bash
+$ sudo imunes -p
+```
+
+Następnie można przystąpić do eksperymentów, poniższe polecenie otwiera GUI i umożliwia uruchomienie eksperymentu:
+
+```bash
+$ sudo imunes
+```
+
+Podczas wykonywania ostatniego polecenia może wystąpić błąd typu:
+
+```bash
+Error loading package Tk: couldn't connect to display ":0"
+```
+
+Aby go rozwiązać należy wykonać polecenie:
+
+```bash
+$ xhost +si:localuser:root
+```
+
+## Alternatywnie można użyć obrazu maszyny wirtualnej
+
+Poszczególne kroki opisane są na stronie wiki [IMUNES Virtual Machine](http://imunes.net/wiki/wiki/WikiImunesVirtualMachine)
+
+## Inne dystrybucje
+
+Instalacja dla innych dystrybucji opisana jest na stronie repozytorium [IMUNES](https://github.com/imunes/imunes)
